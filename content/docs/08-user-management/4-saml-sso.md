@@ -187,7 +187,8 @@ To set up a SAML-based SSO, perform the following steps:<p></p><br />
 4.  **Default Teams** – Add the Default Palette Team membership created above. Please note the Team must be created first in Palette.  Example Team: 
 5.  **NameID Format** - Choose the appropriate version of the format in use (SAML 1.1, SAML 2.0, email address, other).
 
-Example:
+    Example:
+    [](/saml-azure-images/saml-azure-nameid-format.png)
 
 6.  Leave default, edit or copy the following default parameters, which will enable Spectro Cloud Palette as a **Service Provider** (SP) in Azure AD:
 
