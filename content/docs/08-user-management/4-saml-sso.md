@@ -101,6 +101,19 @@ In this example, you'll learn how to integrate Spectro Cloud Palette with Azure 
 
 ## Prerequisites
 
+To configure SSO with Spectro Cloud Palette, you need: 
+
+- An Azure AD user account. If you don't already have one, (you can create an account for free.)[https://azure.microsoft.com/free/?WT.mc_id=A261C142F] 
+- Azure AD group for authenticating Palette Tenant Admins
+- Azure AD group for authenticating Palette Default Project Viewers
+- Spectro Cloud Palette Team to use as a default Team for Azure AD authenticated users
+- One of the following roles in Azure AD: Global Administrator, Cloud Application Administrator, Application Administrator, or owner of the service principal. 
+- Completion of the steps in (Quickstart: Create and assign a user account[https://learn.microsoft.com/en-us/azure/active-directory/manage-apps/add-application-portal-assign-users]
+- A Spectro Cloud Palette Tenant. If you don’t already have one, you can (create an account for free.)[https://www.spectrocloud.com/get-started/]
+
+
+To configure SSO with Spectro Cloud Palette, you need: •	An Azure AD user account. If you don't already have one, you can Create an account for free. •	Azure AD group for authenticating Palette Tenant Admins •	Azure AD group for authenticating Palette Default Project Viewers •	Spectro Cloud Palette Team to use as a default Team for Azure AD authenticated users •	One of the following roles in Azure AD: Global Administrator, Cloud Application Administrator, Application Administrator, or owner of the service principal. •	Completion of the steps in Quickstart: Create and assign a user account. •	A Spectro Cloud Palette Tenant. If you don’t already have one, you can Create an account for free.
+
 ## How to Set Up SAML 2.0-based SSO within Palette
 
 To set up a SAML-based SSO, perform the following steps:<p></p><br />
