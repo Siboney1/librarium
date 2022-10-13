@@ -88,6 +88,129 @@ https://developer.okta.com/docs/guides/build-sso-integration/saml2/before-you-be
 
 ### Azure Active Directory
 
+## Azure Active Directory and SAML-Based Setup
+
+
+## Enable Single-sign on Procedure
+
+In this example, you'll learn how to integrate Spectro Cloud Palette with Azure Active Directory (Azure AD). When you integrate Azure AD SAML Toolkit with Azure AD, you can:
+
+- Control in Azure AD who has access to Spectro Cloud Palette.
+- Enable your users to automatically sign in to Spectro Cloud Palette with their Azure AD accounts. 
+- Manage all Spectro Cloud Palette access in one central location - the Azure AD portal.
+
+## Prerequisites
+
+## How to Set Up SAML 2.0-based SSO within Palette
+
+To set up a SAML-based SSO, perform the following steps:<p></p><br />
+
+1.  Go to the **Azure Active Directory Admin Center** and sign in using one of the roles listed in the prerequisites.<p></p><br />
+2.  From the sidebar menu, select **Groups**. The **Groups > All groups** pane opens and displays a list of the existing groups (if any). Create Azure AD groups and populate them with appropriate Azure AD user accounts for Palette. Here is an example:
+
+    ![Azure Group](/saml-azure-images/saml-group-example.png)
+
+    We created the above groups for Palette SSO SAML authentication. Additionally, for the SSO OIDC authentication to Kubernetes Clusters, you will need additional groups for access.  We will use this information later in Palette. Please leave this window open in a separate tab and continue.<p></p><br />
+
+3.  Go to the **Azure Active Directory Admin Center**. In the left-hand menu, select **Enterprise applications**. The **All applications** pane opens and displays a list of the applications in your Azure AD tenant. Search for and select **Azure AD SAML Toolkit 1.**<p></p><br />
+4.  In the **Manage** section of the left menu, select **Single sign-on** to open the **Single sign-on pane** for editing.<p></p><br />
+5.  Select **SAML** to open the SSO configuration page.<p></p><br />
+6.  Go to the **Set up Azure AD SAML Toolkit 1** section, record the values of the **Login URL**, **Azure AD Identifier**, and **Logout URL** properties to be used later when configuring Spectro Cloud Palette.<p></p><br />
+
+    Here is an example:
+
+    ![](/saml-azure-images/saml-azure-config-identifier.png)
+
+7.  From within the Azure portal, select **Edit** in the **Basic SAML Configuration** section on the **Set up single sign-on** pane. <p></p><br  />
+8.  For **Identifier (Entity ID)**, enter a unique ID that identifies Palette to Azure AD. This value must be unique across all applications in your Azure AD tenant.
+
+    Example: https://test1.console.spectrocloud.com
+
+9.  For **Reply URL (Assertion Consumer Service URL)**, enter the data listed in Spectro Cloud Palette as the *Login URL*.
+
+    Example and screenshot below:
+
+    ![callback](saml-azure-images/saml-azure-reply-url-login.png)
+
+    Example: https://console.spectrocloud.com/v1/auth/org/test1/saml/callback
+
+10.  In the **Sign on URL**, enter the information provided in Palette. 
+
+    Example: [https://console.spectrocloud.com/v1/auth/org/test1/saml/callback](https://console.spectrocloud.com/v1/auth/org/test1/saml/callback)
+
+11.  As the Logout URL, optionally enter the information provided in Palette. 
+
+    Example:
+
+    https://console.spectrocloud.com/v1/auth/org/test1/saml/callback
+
+
+12.  Select **Save**.
+
+13.  In the **SAML Certificates** section, select **Download** for **Federation Metadata XML** to download. Open the file in your favorite editor application, for example, Visual Studio or Notepad.  We will use the data contained in this file to integrate Spectro Cloud Palette in future steps.
+
+14.  Log in to Spectro Cloud Palette as a Tenant Admin.
+
+15.  Select **Tenant Settings** > **Users & Teams** > **Teams **> **+** **Create team**
+
+     We will need to assign a default Team for Azure AD Authenticated Users to join once authenticated.  Please create an appropriately named team with no members for now and select **Confirm**.  Example:
+
+    ![Create Team](saml-azure-images/saml-azure-team-create.png)
+
+     By default, no Roles and privileges are assigned. While users will be successfully authenticated via Azure AD, they are not yet authorized to access Palette resources. To authorize, edit the new Team created above, in our example **DefaultAzureADUsers.**
+
+
+16.  Add an appropriate Project or Tenant Role or leave blank to configure default access with no privileges for authenticated Azure AD users.
+
+    Here are two examples where authenticated users are assigned by default to the Team **DefaultAzureADUsers**. 
+
+    The first example will provide no privileges by default to authenticated AD users. The second example will assign authenticated users to Project Viewer Role to view the Default Project.
+
+
+    **No Roles are assigned by default:**
+
+    ![](saml-azure-images/saml-azure-default-ad-users.png)
+
+
+    ****Project Viewer Role is assigned by default**
+    ![](saml-azure-images/samle-azure-project-viewer.png)
+
+    Please note this **Team** is used to first setup SSO with Palette. Later, we will use Azure AD groups synced to Palette with appropriate roles and privileges assigned to Azure AD groups.  For now, setting one default group for Authenticated users is all we need to continue the SSO setup.
+
+17.  In Spectro Cloud Palette, select **Tenant Settings** > **SSO** > **SAML** to view the panel.
+18.  Under **Service**, select **Azure Active Directory**.
+19.  In the field **Identity Provider Metadata**, paste the contents of the **Azure AD **downloaded **Federation Metadata XML** file.
+20.  **Default Teams** – Add the Default Palette Team membership created above. Please note the Team must be created first in Palette.  Example Team: 
+21.  **NameID Format** - Choose the appropriate version of the format in use (SAML 1.1, SAML 2.0, email address, other).
+
+Example:
+
+22.  Leave default, edit or copy the following default parameters, which will enable Spectro Cloud Palette as a **Service Provider** (SP) in Azure AD:
+
+* **Single Logout URL** - The IdP will use the logout URL for the SAML SSO configuration.
+* **EntityId** - [https://www.spectrocloud.com](https://www.spectrocloud.com/)
+* **FirstName** - Attribute in First Name format.
+* **LastName** - Attribute in Last Name format.
+* **Email** - Attribute in Email format.
+* **SpectroTeam** - Attribute in SpectroTeam format.
+* **Service Provider Metadata** - Provide the EntityDescriptor.
+
+Edit each parameter as necessary and click **Enable** to complete the setup wizard. If successful, Palette will show a message that “SAML configured successfully”.
+
+
+
+23.  In the **Azure portal**, select **Enterprise Applications**, and select the application created in our example: **Azure AD SAML Toolkit.**
+24.  Select **Users and groups **in the sidebar.
+25.  Click **None Selected**.
+
+
+Search for Azure AD **Users and groups** you would like to use for access Spectro Cloud Palette. Click each User and Group after searching. When finished, click **Select** to enable **those Users and groups** to access Palette.
+
+
+## Results
+You have now integrated Spectro Cloud Palette with Azure Active Directory (Azure AD). 
+
+ 
 #### References
 
 https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/add-application-portal-setup-sso
